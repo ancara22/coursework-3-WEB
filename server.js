@@ -67,12 +67,17 @@ let contactsArray = [
 ];
 
 
-
 app.post("/message", (request, response) => {
     let data = request.body;
-
     console.log(JSON.stringify(data));
-    response.send({ "message": "Message sent!" });
+
+    let sqlRequest = `
+        INSERT INTO Messages (sender_id, receiver_id, message_body, message_time)
+        VALUE (${data.sender_id}, ${data.receiver_id}, '${data.message_body}', now())`;
+
+    sendQuerry(sqlRequest, () => {
+        response.send({ "status": true });
+    })
 });
 
 
@@ -115,7 +120,6 @@ app.post("/user/contact", (request, response) => {
             OR ct.friend_id="${user.user_id}"`;
 
     sendQuerry(sqlRequest, (data) => {
-        console.log(JSON.stringify(data));
         response.send(data);
     })
 
@@ -126,9 +130,24 @@ app.post("/user/contact", (request, response) => {
 app.post("/contact/messages", (request, response) => {
     let data = request.body;
 
-    console.log(JSON.stringify(data));
-    response.send({ "message": "Get messages!" });
+
+    let sqlRequest = `
+        SELECT * FROM Messages msg
+        WHERE msg.sender_id=${data.user_id} 
+        AND msg.receiver_id=${data.contact_id}
+            OR msg.sender_id=${data.contact_id} 
+            AND msg.receiver_id=${data.user_id} 
+        ORDER BY message_time ASC`;
+
+    sendQuerry(sqlRequest, (data) => {
+        response.send(data);
+    })
+
+
 })
 
 
 app.listen(8890);
+
+
+

@@ -159,8 +159,7 @@ body {
 
 .message {
     height: fit-content;
-    max-width: 350px;
-    width: max-content;
+    max-width: 250px;
     padding-top: 1px;
     padding-bottom: 1px;
     min-width: 50px;
@@ -180,6 +179,7 @@ body {
 .message p {
     width: 90%;
     color: rgb(231, 230, 230);
+    margin-left: 20px;
 
 }
 
@@ -187,7 +187,7 @@ body {
     text-align: right;
     border-radius: 20px 20px 0px 20px;
     background-color: rgb(42, 182, 246);
-    margin-left: 67vw;
+    margin-left: 50vw;
     padding-left: 5px;
     padding-right: 25px;
 }
@@ -210,7 +210,9 @@ body {
 }
 
 #messages_box {
-    overflow: hidden;
+    position: relative;
+    top: -3.4%;
+    overflow: scroll;
     height: 70%;
 }
 
