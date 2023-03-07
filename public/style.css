@@ -1,0 +1,255 @@
+
+body {
+    overflow: hidden;
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+
+
+}
+
+#top {
+    width: 100%;
+    min-width: 1000px;
+    height: 15vh;
+    min-height: 100px;
+    background-color: rgb(22, 22, 113);
+}
+
+#container {
+    min-width: 1000px;
+    display: flex;
+
+}
+
+#left {
+    width: 400px;
+    min-width: 300px;
+    height: 200px;
+    min-height: 86vh;
+    background: rgb(22,22,113);
+    background: linear-gradient(138deg, rgba(22,22,113,1) 26%, rgba(12,140,201,1) 100%);
+    overflow: hidden;
+
+}
+
+#empty {
+    width: 150px;
+    height: 25%;
+
+}
+
+#contacts {
+    height: 70%;
+    min-height: 21vh;
+    overflow-x: scroll;
+
+
+}
+
+
+#right {
+    position: relative;
+    background-color: rgb(232, 231, 231);
+    width:  100%;
+    height: 86vh;
+    z-index: 1;
+}
+
+#user_data {
+    position: absolute;
+    left: 500px;
+    top: 5px;
+    width: 400px;
+}
+
+#user_data h2 {
+    color: rgb(232, 230, 230);
+}
+
+#user_data p {
+    position: relative;
+    top: -2vh;
+    color: rgb(168, 167, 167);
+}
+
+
+#img img {
+    width: 200px;
+}
+
+#img {
+    background-color: white;
+    border: 5px solid white;
+    border-radius: 50% 50%;
+    width: 200px;
+    height: 200px;
+    position: relative;
+    left: 190px;
+    top: 20px;
+    z-index: 99;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.485);
+   
+}
+
+#img div {
+    border-radius: 50% 50%;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+
+.user_img {
+    border: 2px solid white;
+    border-radius: 50% 50%;
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    overflow: hidden;
+}
+
+.user_img img {
+    width: 60px;
+}
+
+.user {
+    display: flex;
+    padding-left: 40px;
+    padding-right: 20px;
+    padding-bottom: 25px;
+    padding-top: 25px;
+}
+
+.user .user_data {
+    margin-left: 15px;
+    color: rgb(255, 255, 255);
+    position: relative;
+    top: 8px;
+    width: 200px;
+    height: 60px;
+}
+
+.user .user_data p {
+    font-size: 13px;
+    color: rgb(177, 176, 176);
+    position: relative;
+    top: -8px;
+   
+}
+
+.space {
+    width: 100%;
+    height: 150px;
+}
+
+.line {
+    width: 80%;
+    height: 1px;
+    background-color: rgba(128, 128, 128, 0.285);
+    margin: 0 auto;
+
+}
+
+.user:hover {
+    background-color: rgb(83, 83, 188);
+    cursor: pointer;
+    
+}
+
+
+.message {
+    height: fit-content;
+    max-width: 350px;
+    width: max-content;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    min-width: 50px;
+    margin-top: 10px;
+    font-weight: 100;
+
+}
+
+.message_left {
+    border-radius: 20px 20px 20px 0px;
+    background-color: rgb(118, 118, 118);
+    margin-left: 40px;
+    padding-left: 25px;
+    padding-right: 5px;
+
+}
+.message p {
+    width: 90%;
+    color: rgb(231, 230, 230);
+
+}
+
+.message_right{
+    text-align: right;
+    border-radius: 20px 20px 0px 20px;
+    background-color: rgb(42, 182, 246);
+    margin-left: 67vw;
+    padding-left: 5px;
+    padding-right: 25px;
+}
+
+#top_line {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 100px;
+    background-color: rgb(210, 210, 210);
+    display: flex;
+    align-items: center;
+}
+
+#top_line span {
+    color: rgb(64, 64, 64);
+    font-weight: 100;
+    height: 20px;
+    margin: 0 auto;
+
+}
+
+#messages_box {
+    overflow: hidden;
+    height: 70%;
+}
+
+#logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-image: url("img/logo-04.png");
+}
+
+#send {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(5, 99, 221, 0.605);
+    bottom: 0;
+    right: 0px;
+    background: rgb(22,22,113);
+    background: linear-gradient(100deg, rgba(22,22,113,0.2) -28%, rgba(12,140,201,0.2) 100%);
+}
+
+
+#send input {
+    margin-top: 12px;
+    margin-left: 80px;
+    width: 70%;
+    height: 25px;
+    padding-left: 50px;
+    border: 0;
+ 
+}
+
+#send_button {
+    width: 50px;
+    height: 28px;
+    margin-left: 10px;
+    background-color:  white;
+    border: 0;
+}
