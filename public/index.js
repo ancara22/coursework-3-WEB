@@ -1,9 +1,14 @@
+alert("User list:\n email: denis@gmail.com   password: qwer1234 \n email: garry@gmail.com  password: qwer1234\n email: bad@gmail.com  password: qwer1234\n email: ella@gmail.com  password: qwer1234\n email: jack@gmail.com  password: qwer1234");
+
 
 async function getUser(user, callback) {
-
+    let userData = {
+        email: user.user_email,
+        password: user.user_password
+    }
     let filter = {
         method: 'POST',
-        body: JSON.stringify(user),
+        body: JSON.stringify(userData),
         headers: new Headers({
             'Accept': 'application/json',
             "Content-Type": "application/json"
@@ -17,7 +22,6 @@ async function getUser(user, callback) {
             let userData = respons[0];
 
             callback(userData);
-            setUserSesssions(userData);
 
         })
 }
@@ -99,6 +103,44 @@ async function getMessages(user_id, contact_id) {
         })
 }
 
+async function sendMessage(message) {
+
+    let filter = {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: new Headers({
+            'Accept': 'application/json, text/plain, */*',
+            "Content-Type": "application/json"
+        })
+    }
+
+    await fetch("/message", filter)
+        .then((respons) => {
+            return respons.json();
+        }).then((respons) => {
+            getMessages(getUserCookie().user_id, Number(getContactID()));
+            console.log(respons)
+        })
+}
+
+async function login(email, pass, callback) {
+    let filter = {
+        method: 'POST',
+        body: JSON.stringify({ login_email: email, user_pass: pass }),
+        headers: new Headers({
+            'Accept': 'application/json, text/plain, */*',
+            "Content-Type": "application/json"
+        })
+    }
+
+    await fetch("/user/login", filter)
+        .then((respons) => {
+            return respons.json()
+        }).then((respons) => {
+            callback(respons);
+        })
+}
+
 function swipe(arr, i, j) {
     let t = arr[i];
     arr[i] = arr[j];
@@ -107,9 +149,13 @@ function swipe(arr, i, j) {
 
 function renderMessages(messages) {
     let message_box = document.getElementById("messages_box");
-    let user_id = getUserID();
+    let user_id = getUserCookie().user_id;
 
     message_box.innerHTML = "";
+
+    if (messages.length == 0) {
+        message_box.innerHTML = "<span id='empty_conversation'>No messages yet!</span>";
+    }
 
     messages.forEach(msg => {
         let body = "";
@@ -124,19 +170,12 @@ function renderMessages(messages) {
         }
 
         message_box.innerHTML += body;
+
+
+        message_box.scrollTop = message_box.scrollHeight;
     });
 
 
-}
-
-
-function getUserID() {
-    let userID = JSON.parse(sessionStorage.user).user_id;
-    return userID;
-}
-
-function setUserSesssions(userData) {
-    sessionStorage.user = JSON.stringify(userData);
 }
 
 function renderUser(user) {
@@ -158,6 +197,8 @@ function renderUser(user) {
 function renderContacts(contactsList) {
     let contactsBox = document.getElementById("contacts");
 
+    contactsBox.innerHTML = "";
+
     contactsList.forEach(contact_id => {
         getUserByID(contact_id, (userData) => {
 
@@ -177,34 +218,6 @@ function renderContacts(contactsList) {
         });
 
     });
-}
-
-function getMessage() {
-    let messageeBox = document.getElementById("message");
-    let message = messageeBox.value;
-    messageeBox.value = "";
-
-    return message;
-}
-
-async function sendMessage(message) {
-
-    let filter = {
-        method: 'POST',
-        body: JSON.stringify(message),
-        headers: new Headers({
-            'Accept': 'application/json, text/plain, */*',
-            "Content-Type": "application/json"
-        })
-    }
-
-    await fetch("/message", filter)
-        .then((respons) => {
-            return respons.json();
-        }).then((respons) => {
-            getMessages(getUserID(), Number(getContactID()));
-            console.log(respons)
-        })
 }
 
 function removeBackground(contacts) {
@@ -230,11 +243,31 @@ function setButtons() {
 
             topName.textContent = name;
 
-            let userID = getUserID();
+            let userID = getUserCookie().user_id;
             getMessages(userID, id);
 
         });
     }
+}
+
+function getMessage() {
+    let messageeBox = document.getElementById("message");
+    let message = messageeBox.value;
+    messageeBox.value = "";
+
+    return message;
+}
+
+function getUserCookie() {
+    let cookie = {};
+    document.cookie.split(';').forEach(function (el) {
+        let [key, value] = el.split('==');
+        cookie[key.trim()] = value;
+    })
+    if (cookie["user"] == "{}")
+        showLogin();
+
+    return JSON.parse(cookie["user"]);
 }
 
 function setContactID(id) {
@@ -247,36 +280,98 @@ function getContactID() {
     return contactID;
 }
 
+function setChat() {
+    getUser(getUserCookie(), (userData) => {
+        renderUser(userData);
+        getUserContacts(userData.user_id);
 
+    });
 
-//Set events
+    let sendBtn = document.getElementById("send_button");
 
-getUser({ email: "denis@gmail.com", password: "qwer1234" }, (userData) => {
-    renderUser(userData);
-    getUserContacts(userData.user_id);
+    sendBtn.addEventListener("click", () => {
+        let message = getMessage();
 
-});
-
-
-let sendBtn = document.getElementById("send_button");
-
-sendBtn.addEventListener("click", () => {
-    let message = getMessage();
-
-    if (message != "") {
-        let msg = {
-            sender_id: getUserID(),
-            receiver_id: getContactID(),
-            message_body: message,
+        if (message != "") {
+            let msg = {
+                sender_id: getUserCookie().user_id,
+                receiver_id: getContactID(),
+                message_body: message,
+            }
+            sendMessage(msg);
         }
+    });
+}
+
+function showLogin() {
+    let el = document.getElementById("login_back");
+    el.style.display = "block";
+}
+
+function hideLogin() {
+    let el = document.getElementById("login_back");
+    el.style.display = "none";
+}
 
 
-        sendMessage(msg);
+if (localStorage.isLogedIn != undefined && JSON.parse(localStorage.isLogedIn) == true) {
+    setChat();
+    hideLogin()
+}
 
 
+
+let login_btn = document.getElementById("login_btn");
+
+
+login_btn.addEventListener("click", (e) => {
+
+    let login_email = document.getElementById("login_email"),
+        login_pass = document.getElementById("login_pass");
+
+    let email = login_email.value,
+        pass = login_pass.value;
+
+    if (email != "" && pass != "") {
+        console.log('email', email)
+        console.log('pass', pass)
+        login(email, pass, (data) => {
+            if (data.length != 0) {
+                localStorage.isLogedIn = true;
+
+                document.cookie = "user==" + JSON.stringify(data[0]) + ";";
+                let innerEl = document.getElementById("login_box");
+
+                innerEl.innerHTML = "<h3 id='welcome_message'>Welcome</h3>"
+
+                setTimeout((e) => {
+                    hideLogin();
+                    setChat();
+
+                    innerEl.innerHTML = ` <span>Login</span>
+                        <input id="login_email" type="text" placeholder="email">
+                        <input id="login_pass" type="password" placeholder="password">
+                        <button id="login_btn">Login</button>`;
+                }, 2000)
+
+            }
+
+        });
     }
+})
 
 
 
+let logout_btn = document.getElementById("logout_btn");
 
-});
+logout_btn.addEventListener("click", (e) => {
+    localStorage.isLogedIn = false;
+    sessionStorage.contactID = "";
+    document.cookie = "user=={};"
+
+    showLogin();
+    location.reload();
+
+})
+
+

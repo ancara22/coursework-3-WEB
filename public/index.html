@@ -8,6 +8,16 @@
     <title>Chat</title>
 </head>
 <body>
+    <div id="login_back">
+        <div id="login_box">
+            <span>Login</span>
+            <input id="login_email" type="text" placeholder="email">
+            <input id="login_pass" type="password" placeholder="password">
+            <button id="login_btn">Login</button>
+        </div>
+    </div>
+    <button id="logout_btn">Logout</button>
+   
     <div id="top">
         <div id="logo"></div>
         <div id="img">
@@ -22,21 +32,28 @@
     </div>
     <div id="container">
         <div id="left">
-            <div id="empty"></div>
+            <div id="empty">
+                <div id="add_contact">
+                     <input  type="text" placeholder="Add contact email">
+                    <button>Add</button>
+                </div>
+               
+            </div>
             <div id="contacts"></div>
         </div>
         <div id="right"> 
+            <img id="background" src="./img/back-blue-01.png" alt="">
             <div id="top_line">
-                <span>Contact name</span>
+                <span></span>
             </div>
             <div id="messages_box">
-    
             </div>
           
             <div id="send">
                 <input  id="message" type="text" name="message"/>
                 <button id="send_button">Send</button>
             </div>
+            
         </div>
         
     </div>

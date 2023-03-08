@@ -35,41 +35,9 @@ function sendQuerry(query, callback) {
 }
 
 
-let contactsArray = [
-    {
-        id: 2,
-        img: "./img/profile-picture.jpeg",
-        name: "Garry1 Heizerbeg",
-        email: "garry@gmail.com"
-    },
-    {
-        id: 3,
-        img: "./img/profile-picture.jpeg",
-        name: "Garry2 Heizerbeg",
-        email: "garry@gmail.com"
-
-    },
-    {
-        id: 4,
-        img: "./img/profile-picture.jpeg",
-        name: "Garry3 Heizerbeg",
-        email: "garry@gmail.com"
-
-    },
-    {
-        id: 5,
-        img: "./img/profile-picture.jpeg",
-        name: "Garry4 Heizerbeg",
-        email: "garry@gmail.com"
-
-    }
-
-];
-
-
 app.post("/message", (request, response) => {
     let data = request.body;
-    console.log(JSON.stringify(data));
+
 
     let sqlRequest = `
         INSERT INTO Messages (sender_id, receiver_id, message_body, message_time)
@@ -79,6 +47,23 @@ app.post("/message", (request, response) => {
         response.send({ "status": true });
     })
 });
+
+app.post("/user/login", (request, response) => {
+    let user = request.body;
+    console.log(JSON.stringify(user));
+
+    let sqlRequest = `
+        SELECT * FROM Users us 
+        WHERE us.user_email="${user.login_email}" 
+            AND us.user_password="${user.user_pass}"`;
+
+    sendQuerry(sqlRequest, (data) => {
+        response.send(data);
+    })
+
+});
+
+
 
 
 app.post("/user", (request, response) => {
