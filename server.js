@@ -28,12 +28,7 @@ function sendQuerry(query, callback) {
         }
 
     })
-
-
-
-
 }
-
 
 app.post("/message", (request, response) => {
     let data = request.body;
@@ -63,8 +58,31 @@ app.post("/user/login", (request, response) => {
 
 });
 
+app.post("/user/exist", (request, response) => {
+    let data = request.body;
+
+    let sqlCheckUser = `
+        SELECT user_id FROM Users us 
+        WHERE us.user_email="${data.contact_email}"`;
+
+    sendQuerry(sqlCheckUser, (resp) => {
+        response.send(resp);
+    })
+})
+
+app.post("/user/contact/create", (request, response) => {
+    let data = request.body;
+
+    let sqlInsertContact = `
+                INSERT INTO Contacts (user_id, friend_id)
+                VALUE (${data.user_id}, ${data.friend_id})`;
+
+    sendQuerry(sqlInsertContact, (status) => {
+        response.send(status);
+    })
 
 
+});
 
 app.post("/user", (request, response) => {
     let user = request.body;
@@ -79,7 +97,6 @@ app.post("/user", (request, response) => {
     })
 })
 
-
 app.post("/user/id", (request, response) => {
     let user = request.body;
 
@@ -91,10 +108,6 @@ app.post("/user/id", (request, response) => {
         response.send(data);
     })
 })
-
-
-
-
 
 app.post("/user/contact", (request, response) => {
     let user = request.body;
@@ -110,7 +123,6 @@ app.post("/user/contact", (request, response) => {
 
 
 })
-
 
 app.post("/contact/messages", (request, response) => {
     let data = request.body;
@@ -131,6 +143,20 @@ app.post("/contact/messages", (request, response) => {
 
 })
 
+app.post("/user/new", (request, response) => {
+    let user = request.body;
+
+    console.log('user', JSON.stringify(user))
+
+    let sqlRequest = `
+        INSERT INTO Users (first_name, last_name, user_email, user_password, user_img)
+        VALUE ("${user.first_name}", "${user.last_name}", "${user.email}", "${user.password}", "${user.img}")`;
+
+
+    sendQuerry(sqlRequest, (data) => {
+        response.send({ "status": "ok" });
+    })
+})
 
 app.listen(8890);
 

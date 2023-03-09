@@ -74,7 +74,8 @@ body {
 
 
 #img img {
-    width: 200px;
+    width: auto;
+    height: inherit;
 }
 
 #img {
@@ -213,9 +214,9 @@ body {
 
 #messages_box {
     position: relative;
-    top: -17.5%;
+    top: -15.5%;
     overflow: scroll;
-    height: 70.4%;
+    height: 72.8%;
     z-index: 1;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -323,12 +324,12 @@ body {
     color: rgba(128, 128, 128, 0.64);
 }
 
-#login_box button {
+#login_box #login_btn, #reg_btn {
     width: 130px;
     margin: 0 auto;
     margin-top: 30px;
     padding: 10px 30px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     border: 0;
     background-color: rgb(1, 1, 130);
     color: white;
@@ -337,7 +338,7 @@ body {
 }
 
 
-#login_box button:hover {
+#login_box #login_btn:hover, #reg_btn:hover  {
     background-color: rgb(56, 56, 233);
     transform: scale(1.2);
     
@@ -392,4 +393,18 @@ body {
     background-color: rgb(1, 1, 52);
     color: white;
     cursor: pointer;
+}
+
+#registration_btn, #log_btn {
+    margin: 0 auto;
+    margin-bottom: 20px;
+    width: max-content;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    color: gray;
+}
+
+#registration_btn:hover, #log_btn:hover {
+    color: black;
 }
